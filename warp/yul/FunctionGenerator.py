@@ -208,3 +208,49 @@ class CairoFunctions:
 
         self.generator.create_function(name, inner)
         return FunctionInfo(name=name, implicits=implicits, kwarg_names=())
+
+    def mstore_aligned(self, offset: int) -> FunctionInfo:
+        name = f"mstore_{offset}"
+        implicits = ("memory_dict", "msize", "range_check_ptr")
+        self.generator.create_function(name, _mstore_aligned(offset, name, implicits))
+        return FunctionInfo(name=name, implicits=implicits, kwarg_names=())
+
+    def mload_aligned(self, offset: int) -> FunctionInfo:
+        name = f"mload_{offset}"
+        implicits = ("memory_dict", "msize", "range_check_ptr")
+        self.generator.create_function(name, _mload_aligned(offset, name, implicits))
+        return FunctionInfo(name=name, implicits=implicits, kwarg_names=())
+
+def _mload_aligned(offset: int, name: str, implicits: Tuple[str]) -> str:
+    def inner():
+        implicits_str = (
+            "{" + ", ".join(print_implicit(x) for x in sorted(implicits)) + "}"
+        )
+        return (
+                f"func {name}{implicits_str}(value : Uint256):"
+                f"alloc_locals"
+                f"let (msize) = update_msize(msize, {offset}, 32)"
+                f"let (high) = dict_read\{dict_ptr=memory_dict\}({offset})",
+                f"let (low) = dict_read\{dict_ptr=memory_dict\}({offset + 16})",
+                f"return (Uint256(low=low, high=high))"
+                f"end"
+        )
+    return inner
+
+
+def _mstore_aligned(offset: int, name: str, implicits: Tuple[str]) -> str:
+    def inner():
+        implicits_str = (
+            "{" + ", ".join(print_implicit(x) for x in sorted(implicits)) + "}"
+        )
+        return (
+                f"func {name}{implicits_str}(value : Uint256):"
+                f"alloc_locals"
+                f"let (msize) = update_msize(msize, {offset}, 32)"
+                f"dict_write\{dict_ptr=memory_dict\}({offset}, value.high)"
+                f"dict_write\{dict_ptr=memory_dict\}({offset + 16}, value.low)"
+                f"return ()"
+                f"end"
+        )
+    return inner
+

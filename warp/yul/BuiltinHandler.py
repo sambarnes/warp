@@ -299,15 +299,6 @@ class MStore8(StaticHandler):
         )
 
 
-class MLoad(StaticHandler):
-    def __init__(self):
-        super().__init__(
-            function_name="uint256_mload",
-            module="evm.memory",
-            used_implicits=("memory_dict", "msize", "range_check_ptr"),
-        )
-
-
 class MSize(StaticHandler):
     def __init__(self):
         super().__init__(
@@ -327,6 +318,19 @@ class SLoad(DynamicHandler):
 
     def get_kwarg_names(self):
         return None
+
+class MLoad(DynamicHandler):
+    def __init__(self, cairo_functions: CairoFunctions):
+        super().__init__(
+            cairo_functions.mload_aligned,
+            function_name="uint256_mload",
+            module="evm.memory",
+            used_implicits=("memory_dict", "msize", "range_check_ptr"),
+        )
+
+    def get_function_call(self, function_args: Sequence[str]) -> str:
+        
+
 
 
 # ============ Hashing ============
