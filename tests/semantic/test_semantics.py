@@ -8,8 +8,11 @@ from pathlib import Path
 import pytest
 import pytest_check as check
 from starkware.starknet.compiler.compile import compile_starknet_files
+from json.decoder import JSONDecodeError
+from starkware.starkware_utils.error_handling import StarkException
 from starkware.starknet.testing.state import StarknetState
 from yul.main import transpile_from_solidity
+from starkware.cairo.lang.vm.vm_exceptions import VmException
 from yul.starknet_utils import (
     deploy_contract,
     deploy_contract_evm_calldata,
@@ -157,9 +160,11 @@ async def test_semantics(contract_file):
 
         print(test_info)
         if test_info["failure"]:
-            with pytest.raises(Exception) as e:
-                # Narrow down the list of permissible exceptions
+            try:
                 await invoke_method_evm_calldata(starknet, contract_address, argument)
+            except (VmException, JSONDecodeError, StarkException):
+                os.remove(cairo_file_path)
+                return
         else:
             res = await invoke_method_evm_calldata(starknet, contract_address, argument)
 
