@@ -200,6 +200,7 @@
     "solidity/test/libsolidity/semanticTests/salted_create/salted_create.sol", 
     "solidity/test/libsolidity/semanticTests/array/copying/array_of_structs_containing_arrays_memory_to_storage.sol", 
     "solidity/test/libsolidity/semanticTests/array/copying/array_of_struct_memory_to_storage.sol", 
+    "solidity/test/libsolidity/semanticTests/various/staticcall_for_view_and_pure.sol",
 
     "// isoltests",
     "solidity/test/libsolidity/semanticTests/isoltestTesting/builtins.sol",
