@@ -130,7 +130,6 @@ async def test_semantics(contract_file):
         contract_file, get_last_contract(contract_file)
     )
 
-    print(get_last_contract(contract_file))
     cairo_code = program_info["cairo_code"]
     cairo_file_path = f"{os.path.splitext(contract_file)[0]}.cairo.temp"
         
@@ -159,7 +158,6 @@ async def test_semantics(contract_file):
         expected_result = test_info["expectations"]
         argument = bytes.fromhex(test_info["callData"][2:])
 
-        print(test_info)
         if test_info["failure"]:
             try:
                 await invoke_method_evm_calldata(starknet, contract_address, argument)
@@ -178,6 +176,8 @@ async def test_semantics(contract_file):
                     final_res = final_res + r
                 final_res = "0x" + final_res.hex()
 
+                # print(f"final_res: {final_res}")
+                # print(f"expected_res: {expected_result}\n\n")
                 # TODO convert the expected_result to uint256
                 check.equal(final_res, expected_result, cairo_file_path)
 
@@ -188,7 +188,7 @@ async def test_semantics(contract_file):
 #     # compiled_files = [
 #     #     test_semantics(sol_file) for sol_file in sol_files_in_dir(test_folder)
 #     # ]
-#     await test_semantics("/home/greg/dev/nethermind/warp/tests/semantic/solidity/test/libsolidity/semanticTests/various/super_parentheses.sol")
+#     await test_semantics("/home/greg/dev/nethermind/warp/tests/semantic/solidity/test/libsolidity/semanticTests/operators/shifts/bitwise_shifting_constantinople.sol")
 #     # await asyncio.gather(*compiled_files)
 
 

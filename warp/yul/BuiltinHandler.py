@@ -294,7 +294,9 @@ class Sdiv(StaticHandler):
 
 class Exp(StaticHandler):
     def __init__(self):
-        super().__init__(function_name="uint256_exp", module="evm.uint256")
+        super().__init__(function_name="uint256_exp", 
+        used_implicits=("range_check_ptr", "bitwise_ptr"), 
+        module="evm.uint256")
 
 
 class Mod(StaticHandler):
@@ -314,7 +316,10 @@ class AddMod(StaticHandler):
 
 class MulMod(StaticHandler):
     def __init__(self):
-        super().__init__(function_name="uint256_mulmod", module="evm.uint256")
+        super().__init__(function_name="uint256_mulmod",      
+            module="evm.uint256",
+            used_implicits=("range_check_ptr", "bitwise_ptr"),
+        )
 
 
 class SignExtend(StaticHandler):

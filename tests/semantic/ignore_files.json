@@ -350,6 +350,29 @@
     "solidity/test/libsolidity/semanticTests/userDefinedValueType/multisource.sol",
     "solidity/test/libsolidity/semanticTests/userDefinedValueType/multisource_module.sol",
 
+    "// uses msg.sender (always 0 on starknet if tx not from another contract)",
+    "solidity/test/libsolidity/semanticTests/functionTypes/mapping_of_functions.sol",
+    "solidity/test/libsolidity/semanticTests/isoltestTesting/account.sol",
+    "solidity/test/libsolidity/semanticTests/state/msg_sender.sol",
+    "solidity/test/libsolidity/semanticTests/various/multi_modifiers.sol",
+    "solidity/test/libsolidity/semanticTests/various/senders_balance.sol",
+    "solidity/test/libsolidity/semanticTests/viaYul/msg_sender.sol",
+
+    "// fallback function used",
+    "solidity/test/libsolidity/semanticTests/fallback/falback_return.sol",
+    "solidity/test/libsolidity/semanticTests/fallback/fallback_argument.sol",
+    "solidity/test/libsolidity/semanticTests/fallback/fallback_argument_to_storage.sol",
+    "solidity/test/libsolidity/semanticTests/fallback/fallback_or_receive.sol",
+    "solidity/test/libsolidity/semanticTests/fallback/fallback_override.sol",
+    "solidity/test/libsolidity/semanticTests/fallback/fallback_override2.sol",
+    "solidity/test/libsolidity/semanticTests/fallback/fallback_override_multi.sol",
+    "solidity/test/libsolidity/semanticTests/fallback/fallback_return_data.sol",
+    "solidity/test/libsolidity/semanticTests/fallback/inherited.sol",
+    "solidity/test/libsolidity/semanticTests/fallback/short_data_calls_fallback.sol",
+    "solidity/test/libsolitidy/semanticTests/array/delete/delete_removes_bytes_data.sol",
+    "solidity/test/libsolitidy/semanticTests/fallback/expressions/uncalled_address_transfer_send.sol",
+    "solidity/test/libsolitidy/semanticTests/reverts/revert_return_area.sol",
+    "solidity/test/libsolitidy/semanticTests/smoke/fallback.sol",
 
 
     "// not implemented on starknet" ,
@@ -367,6 +390,8 @@
     "solidity/test/libsolidity/semanticTests/various/codehash_assembly.sol",
     "solidity/test/libsolidity/semanticTests/various/contract_binary_dependencies.sol",
     "solidity/test/libsolidity/semanticTests/various/gasleft_decrease.sol",
-    "solidity/test/libsolidity/semanticTests/various/gasleft_shadow_resolution.sol"
+    "solidity/test/libsolidity/semanticTests/various/gasleft_shadow_resolution.sol",
+    "solidity/test/libsolidity/semanticTests/reverts/invalid_instruction.sol",
+    "solidity/test/libsolidity/semanticTests/uninitializedFunctionPointer/invalidInConstructor"
   ]
 }
