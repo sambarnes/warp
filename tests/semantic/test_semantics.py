@@ -1,18 +1,18 @@
 import asyncio
 import json
 import os
-import sys
 import re
-from pathlib import Path
-
 import pytest
 import pytest_check as check
-from starkware.starknet.compiler.compile import compile_starknet_files
+
+from pathlib import Path
+
 from json.decoder import JSONDecodeError
-from starkware.starkware_utils.error_handling import StarkException
-from starkware.starknet.testing.state import StarknetState
-from yul.main import transpile_from_solidity
 from starkware.cairo.lang.vm.vm_exceptions import VmException
+from starkware.starknet.compiler.compile import compile_starknet_files
+from starkware.starknet.testing.state import StarknetState
+from starkware.starkware_utils.error_handling import StarkException
+from yul.main import transpile_from_solidity
 from yul.starknet_utils import (
     deploy_contract,
     deploy_contract_evm_calldata,
@@ -139,6 +139,7 @@ async def test_semantics(contract_file):
         fp.write(cairo_code)
 
     contract_definition = await starknet_compile(cairo_file_path)
+
 
     starknet = await StarknetState.empty()
     contract_address = None

@@ -177,6 +177,8 @@
     "solidity/test/libsolidity/semanticTests/constants/simple_constant_variables_test.sol",
 
     "// Uses create/create2/new {CONTRACT}",
+    "solidity/test/libsolidity/semanticTests/array/reusing_memory.sol",
+    "solidity/test/libsolidity/semanticTests/abiEncoderV2/calldata_array_function_types.sol",
     "solidity/test/libsolidity/semanticTests/abiEncoderV2/abi_encode_v2_in_modifier_used_in_v1_contract.sol",
     "solidity/test/libsolidity/semanticTests/abiencodedecode/abi_encode_call.sol", 
     "solidity/test/libsolidity/semanticTests/abiencodedecode/contract_array.sol", 
@@ -311,6 +313,7 @@
 
     "// invalid address conversion",
     "solidity/test/libsolidity/semanticTests/types/type_conversion_cleanup.sol",
+    "solidity/test/libsolidity/semanticTests/cleanup/cleanup_address_types_shortening.sol",
 
 
     "// invalid solidity (containts ==== Source",
