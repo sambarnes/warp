@@ -480,6 +480,9 @@
     "solidity/test/libsolidity/semanticTests/types/external_function_to_address.sol",
     "solidity/test/libsolidity/semanticTests/uninitializedFunctionPointer/invalidInConstructor.sol",
     "solidity/test/libsolidity/semanticTests/uninitializedFunctionPointer/invalidStoredInConstructor.sol",
-    "solidity/test/libsolidity/semanticTests/viaYul/array_function_pointers.sol"
+    "solidity/test/libsolidity/semanticTests/viaYul/array_function_pointers.sol",
+    
+    "// keccak data too large",
+    "solidity/test/libsolidity/semanticTests/specialFunctions/keccak256_optimized.sol"
   ]
 }
