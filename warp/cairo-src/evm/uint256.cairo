@@ -1,4 +1,4 @@
-from starkware.cairo.common.bitwise import bitwise_and, bitwise_not
+from starkware.cairo.common.bitwise import bitwise_and, bitwise_not, bitwise_or
 from starkware.cairo.common.cairo_builtins import BitwiseBuiltin
 from starkware.cairo.common.math import assert_not_zero, unsigned_div_rem
 from starkware.cairo.common.math_cmp import is_le
@@ -10,6 +10,34 @@ from starkware.cairo.common.uint256 import (
 from evm.pow2 import pow2
 
 const UINT128_BOUND = 2 ** 128
+
+func shr_helper{range_check_ptr, bitwise_ptr : BitwiseBuiltin*}(i, a : Uint256) -> (
+        result : Uint256):
+    let (le_127) = is_le(i, 127)
+    if le_127 == 1:
+        # (h', l') := (h, l) >> i
+        # p := 2^i
+        # l' = ((h & (p-1)) << (128 - i)) + ((l&~(p-1)) >> i)
+        #    = ((h & (p-1)) << 128 >> i) + ((l&~(p-1)) >> i)
+        #    = (h & (p-1)) * 2^128 / p + (l&~(p-1)) / p
+        #    = (h & (p-1) * 2^128 + l&~(p-1)) / p
+        # h' = h >> i = (h - h&(p-1)) / p
+        let (p) = pow2(i)
+        let (low_mask) = bitwise_not(p - 1)
+        let (low_part) = bitwise_and(a.low, low_mask)
+        let (high_part) = bitwise_and(a.high, p - 1)
+        return (
+            Uint256(low=(low_part + UINT128_BOUND * high_part) / p, high=(a.high - high_part) / p))
+    end
+    let (le_255) = is_le(i, 255)
+    if le_255 == 1:
+        let (p) = pow2(i - 128)
+        let (mask) = bitwise_not(p - 1)
+        let (res) = bitwise_and(a.high, mask)
+        return (Uint256(res / p, 0))
+    end
+    return (Uint256(0, 0))
+end
 
 func u256_add{range_check_ptr}(x : Uint256, y : Uint256) -> (result : Uint256):
     let (result : Uint256, _) = uint256_add(x, y)
@@ -37,36 +65,11 @@ func u256_shr{range_check_ptr, bitwise_ptr : BitwiseBuiltin*}(i : Uint256, a : U
     if i.high != 0:
         return (Uint256(0, 0))
     end
-    let (le_127) = is_le(i.low, 127)
-    if le_127 == 1:
-        # (h', l') := (h, l) >> i
-        # p := 2^i
-        # l' = ((h & (p-1)) << (128 - i)) + ((l&~(p-1)) >> i)
-        #    = ((h & (p-1)) << 128 >> i) + ((l&~(p-1)) >> i)
-        #    = (h & (p-1)) * 2^128 / p + (l&~(p-1)) / p
-        #    = (h & (p-1) * 2^128 + l&~(p-1)) / p
-        # h' = h >> i = (h - h&(p-1)) / p
-        let (p) = pow2(i.low)
-        let (low_mask) = bitwise_not(p - 1)
-        let (low_part) = bitwise_and(a.low, low_mask)
-        let (high_part) = bitwise_and(a.high, p - 1)
-        return (
-            Uint256(low=(low_part + UINT128_BOUND * high_part) / p, high=(a.high - high_part) / p))
-    end
-    let (le_255) = is_le(i.low, 255)
-    if le_255 == 1:
-        let (p) = pow2(i.low - 128)
-        let (mask) = bitwise_not(p - 1)
-        let (res) = bitwise_and(a.high, mask)
-        return (Uint256(res / p, 0))
-    end
-    return (Uint256(0, 0))
+    return shr_helper(i.low, a)
 end
 
 # THE ORDER OF ARGUMENTS IS REVERSED, LIKE IN YUL
 func u256_shl{range_check_ptr}(x : Uint256, y : Uint256) -> (result : Uint256):
-    let (overflow_check)  = uint256_lt(y, Uint256(256,0))
-    assert overflow_check = 1
     let (result : Uint256) = uint256_shl(y, x)
     return (result=result)
 end
@@ -136,25 +139,37 @@ func extract_lowest_byte{range_check_ptr}(x : Uint256) -> (byte : felt, rest : U
     return (byte=rem.low, rest=quot)
 end
 
-func uint256_sar{range_check_ptr}(a : Uint256, b : Uint256) -> (res : Uint256):
+func uint256_sar{range_check_ptr, bitwise_ptr : BitwiseBuiltin*}(i : Uint256, a : Uint256) -> (
+        res : Uint256):
     alloc_locals
-    let (overflow_check)  = uint256_lt(a, Uint256(256,0))
-    assert overflow_check = 1
-    let (c : Uint256) = uint256_pow2(a)
-    let (res : Uint256, rem : Uint256) = uint256_signed_div_rem(b, c)
-    let (rem_neg) = is_le(2 ** 127, rem.high)
-    if rem_neg == 1:
-      return uint256_sub(res, Uint256(1, 0))
-    else:
-      return (res)
+    let (a_neg) = is_le(2 ** 127, a.high)
+    if a_neg == 0:
+        return u256_shr(i, a)
     end
-end
+    if i.high != 0:
+        return (Uint256(2 ** 128 - 1, 2 ** 128 - 1))
+    end
+    let (shred) = shr_helper(i.low, a)
+    let (le_127) = is_le(i.low, 127)
+    if le_127 == 1:
+        let (mask) = pow2(i.low)
+        let (mask) = bitwise_not(mask - 1)
+        let (res_high) = bitwise_or(shred.high, mask)
+        return (Uint256(shred.low, res_high))
+    end
+    let (le_255) = is_le(i.low, 255)
+    if le_255 == 1:
+        let (mask) = pow2(i.low - 128)
+        let (mask) = bitwise_not(mask - 1)
+        let (res_low) = bitwise_or(shred.low, mask)
+        return (Uint256(res_low, 2 ** 128 - 1))
+    end
+    return (Uint256(2 ** 128 - 1, 2 ** 128 - 1))
+ end
 
 
-func uint256_signextend{range_check_ptr}(i : Uint256, a : Uint256) -> (res : Uint256):
+func uint256_signextend{range_check_ptr, bitwise_ptr : BitwiseBuiltin*}(i : Uint256, a : Uint256) -> (res : Uint256):
     alloc_locals
-    let (overflow_check)  = uint256_lt(a, Uint256(256,0))
-    assert overflow_check = 1
     let (i, _) = uint256_mul(i, cast((8, 0), Uint256))
     let (i) = uint256_sub(cast((248, 0), Uint256), i)
     let (a) = uint256_shl(a, i)

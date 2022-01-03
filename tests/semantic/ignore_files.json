@@ -144,6 +144,7 @@
     "solidity/test/libsolidity/semanticTests/smoke/fallback.sol",
 
     "// L1 builtins",
+    "solidity/test/libsolidity/semanticTests/inlineAssembly/chainid.sol",
     "solidity/test/libsolidity/semanticTests/builtinFunctions/blockhash.sol",
     "solidity/test/libsolidity/semanticTests/builtinFunctions/blockhash_shadow_resolution.sol",
     "solidity/test/libsolidity/semanticTests/builtinFunctions/msg_sig.sol",
@@ -180,6 +181,13 @@
     "solidity/test/libsolidity/semanticTests/constants/simple_constant_variables_test.sol",
 
     "// Uses create/create2/new {CONTRACT}",
+    "solidity/test/libsolidity/semanticTests/smoke/alignment.sol",
+    "solidity/test/libsolidity/semanticTests/inheritance/inherited_function_calldata_memory_interface.sol",
+    "solidity/test/libsolidity/semanticTests/inheritance/inherited_function_calldata_calldata_interface.sol",
+    "solidity/test/libsolidity/semanticTests/inheritance/address_overload_resolution.sol",
+    "solidity/test/libsolidity/semanticTests/abiEncoderV2/struct/struct_function.sol",
+    "solidity/test/libsolidity/semanticTests/freeFunctions/new_operator.sol",
+    "solidity/test/libsolidity/semanticTests/abiEncoderV2/cleanup/function.sol",
     "solidity/test/libsolidity/semanticTests/array/reusing_memory.sol",
     "solidity/test/libsolidity/semanticTests/abiEncoderV2/calldata_array_function_types.sol",
     "solidity/test/libsolidity/semanticTests/abiEncoderV2/abi_encode_v2_in_modifier_used_in_v1_contract.sol",
@@ -452,6 +460,26 @@
     "solidity/test/libsolidity/semanticTests/userDefinedValueType/in_parenthesis.sol",
     "solidity/test/libsolidity/semanticTests/userDefinedValueType/multisource_module.sol",
     "solidity/test/libsolidity/semanticTests/userDefinedValueType/storage_layout.sol",
-    "solidity/test/libsolidity/semanticTests/userDefinedValueType/wrap_unwrap_via_contract_name.sol"
+    "solidity/test/libsolidity/semanticTests/userDefinedValueType/wrap_unwrap_via_contract_name.sol",
+
+
+    "// functions as variables",
+    "solidity/test/libsolidity/semanticTests/storage/packed_functions.sol",
+    "solidity/test/libsolidity/semanticTests/conversions/function_type_array_to_storage.sol",
+    "solidity/test/libsolidity/semanticTests/array/function_array_cross_calls.sol",
+    "solidity/test/libsolidity/semanticTests/constructor/constructor_function_argument.sol",
+    "solidity/test/libsolidity/semanticTests/types/external_function_to_address.sol",
+    "solidity/test/libsolidity/semanticTests/abiEncoderV2/struct/validation_function_type_inside_struct.sol",
+    "solidity/test/libsolidity/semanticTests/viaYul/array_function_pointers.sol",
+    "solidity/test/libsolidity/semanticTests/functionTypes/struct_with_external_function.sol",
+    "solidity/test/libsolidity/semanticTests/functionTypes/function_external_delete_storage.sol",
+    "solidity/test/libsolidity/semanticTests/uninitializedFunctionPointer/invalidStoredInConstructor.sol",
+    "solidity/test/libsolidity/semanticTests/uninitializedFunctionPointer/invalidInConstructor.sol",
+    "solidity/test/libsolidity/semanticTests/externalSource/multiple_external_source.sol",
+    "solidity/test/libsolidity/semanticTests/functionCall/creation_function_call_no_args.sol",
+    "solidity/test/libsolidity/semanticTests/functionCall/creation_function_call_with_args.sol",
+    "solidity/test/libsolidity/semanticTests/functionTypes/pass_function_types_externally.sol",
+    "solidity/test/libsolidity/semanticTests/structs/multislot_struct_allocation.sol",
+    "solidity/test/libsolidity/semanticTests/operators/shifts/bitwise_shifting_constantinople_combined.sol"
   ]
 }
