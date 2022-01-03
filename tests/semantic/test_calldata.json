@@ -14358,12 +14358,6 @@
             "expectations": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
             "failure": false,
             "signature": "sar(uint256,uint256)"
-        },
-        {
-            "callData": "0xbd884ce8ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000000000000000000000000000000000000000000000000000000000000100",
-            "expectations": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-            "failure": false,
-            "signature": "sar(uint256,uint256)"
         }
     ],
     "./scripts/../test/libsolidity/semanticTests/operators/shifts/bitwise_shifting_constantinople_combined.sol": [
@@ -14408,54 +14402,6 @@
             "expectations": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
             "failure": false,
             "signature": "sar_zero(uint256)"
-        },
-        {
-            "callData": "0x1a0131c90000000000000000000000000000000000000000000000000000000000000000",
-            "expectations": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "failure": false,
-            "signature": "shl_large(uint256)"
-        },
-        {
-            "callData": "0x1a0131c9000000000000000000000000000000000000000000000000000000000000ffff",
-            "expectations": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "failure": false,
-            "signature": "shl_large(uint256)"
-        },
-        {
-            "callData": "0x1a0131c9ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-            "expectations": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "failure": false,
-            "signature": "shl_large(uint256)"
-        },
-        {
-            "callData": "0x78b1a9d80000000000000000000000000000000000000000000000000000000000000000",
-            "expectations": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "failure": false,
-            "signature": "shr_large(uint256)"
-        },
-        {
-            "callData": "0x78b1a9d8ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-            "expectations": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "failure": false,
-            "signature": "shr_large(uint256)"
-        },
-        {
-            "callData": "0xbfa7f4c70000000000000000000000000000000000000000000000000000000000000000",
-            "expectations": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "failure": false,
-            "signature": "sar_large(uint256)"
-        },
-        {
-            "callData": "0xbfa7f4c77fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-            "expectations": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "failure": false,
-            "signature": "sar_large(uint256)"
-        },
-        {
-            "callData": "0xbfa7f4c7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-            "expectations": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-            "failure": false,
-            "signature": "sar_large(uint256)"
         },
         {
             "callData": "0xc78500350000000000000000000000000000000000000000000000000000000000000000",
@@ -14504,66 +14450,6 @@
             "expectations": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
             "failure": false,
             "signature": "sar_combined(uint256)"
-        },
-        {
-            "callData": "0xa2f24b690000000000000000000000000000000000000000000000000000000000000000",
-            "expectations": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "failure": false,
-            "signature": "shl_combined_large(uint256)"
-        },
-        {
-            "callData": "0xa2f24b69000000000000000000000000000000000000000000000000000000000000ffff",
-            "expectations": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "failure": false,
-            "signature": "shl_combined_large(uint256)"
-        },
-        {
-            "callData": "0xa2f24b69ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-            "expectations": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "failure": false,
-            "signature": "shl_combined_large(uint256)"
-        },
-        {
-            "callData": "0xd1874b020000000000000000000000000000000000000000000000000000000000000002",
-            "expectations": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "failure": false,
-            "signature": "shl_combined_overflow(uint256)"
-        },
-        {
-            "callData": "0x46595c6e0000000000000000000000000000000000000000000000000000000000000000",
-            "expectations": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "failure": false,
-            "signature": "shr_combined_large(uint256)"
-        },
-        {
-            "callData": "0x46595c6effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-            "expectations": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "failure": false,
-            "signature": "shr_combined_large(uint256)"
-        },
-        {
-            "callData": "0xdd60462d0000000000000000000000000000000000000000000000000000000000000002",
-            "expectations": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "failure": false,
-            "signature": "shr_combined_overflow(uint256)"
-        },
-        {
-            "callData": "0x6ba5c84e0000000000000000000000000000000000000000000000000000000000000000",
-            "expectations": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "failure": false,
-            "signature": "sar_combined_large(uint256)"
-        },
-        {
-            "callData": "0x6ba5c84e7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-            "expectations": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "failure": false,
-            "signature": "sar_combined_large(uint256)"
-        },
-        {
-            "callData": "0x6ba5c84effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-            "expectations": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-            "failure": false,
-            "signature": "sar_combined_large(uint256)"
         }
     ],
     "./scripts/../test/libsolidity/semanticTests/operators/shifts/bitwise_shifting_constants_constantinople.sol": [

@@ -65,6 +65,8 @@ end
 
 # THE ORDER OF ARGUMENTS IS REVERSED, LIKE IN YUL
 func u256_shl{range_check_ptr}(x : Uint256, y : Uint256) -> (result : Uint256):
+    let (overflow_check)  = uint256_lt(y, Uint256(256,0))
+    assert overflow_check = 1
     let (result : Uint256) = uint256_shl(y, x)
     return (result=result)
 end
@@ -103,6 +105,10 @@ func slt{range_check_ptr}(op1 : Uint256, op2 : Uint256) -> (result : Uint256):
 end
 
 func sgt{range_check_ptr}(op1 : Uint256, op2 : Uint256) -> (result : Uint256):
+    let (eq) = uint256_eq(op1, op2)
+    if eq == 1:
+        return (Uint256(0,0)) 
+    end
     let (res) = uint256_signed_lt(op1, op2)
     return (result=Uint256(1 - res, 0))
 end
@@ -113,16 +119,12 @@ func uint256_mod{range_check_ptr}(a : Uint256, m : Uint256) -> (res : Uint256):
 end
 
 func uint256_addmod{range_check_ptr}(a : Uint256, b : Uint256, m : Uint256) -> (res : Uint256):
+    alloc_locals
     let (_, ar) = uint256_unsigned_div_rem(a, m)
     let (_, br) = uint256_unsigned_div_rem(b, m)
-    let (ar_c) = uint256_sub(m, ar)
-    let (fits) = uint256_lt(br, ar_c)
-    if fits == 1:
-        return u256_add(ar, br)
-    else:
-        return uint256_sub(br, ar_c)
-    end
+    return addmod_helper(ar, br, m)
 end
+
 
 func smod{range_check_ptr}(op1 : Uint256, op2 : Uint256) -> (res : Uint256):
     let (_, rem : Uint256) = uint256_signed_div_rem(op1, op2)
@@ -135,13 +137,24 @@ func extract_lowest_byte{range_check_ptr}(x : Uint256) -> (byte : felt, rest : U
 end
 
 func uint256_sar{range_check_ptr}(a : Uint256, b : Uint256) -> (res : Uint256):
-    let (c) = uint256_pow2(a)
-    let (res, _) = uint256_signed_div_rem(b, c)
-    return (res)
+    alloc_locals
+    let (overflow_check)  = uint256_lt(a, Uint256(256,0))
+    assert overflow_check = 1
+    let (c : Uint256) = uint256_pow2(a)
+    let (res : Uint256, rem : Uint256) = uint256_signed_div_rem(b, c)
+    let (rem_neg) = is_le(2 ** 127, rem.high)
+    if rem_neg == 1:
+      return uint256_sub(res, Uint256(1, 0))
+    else:
+      return (res)
+    end
 end
 
-func uint256_signextend{range_check_ptr}(a : Uint256, i : Uint256) -> (res : Uint256):
+
+func uint256_signextend{range_check_ptr}(i : Uint256, a : Uint256) -> (res : Uint256):
     alloc_locals
+    let (overflow_check)  = uint256_lt(a, Uint256(256,0))
+    assert overflow_check = 1
     let (i, _) = uint256_mul(i, cast((8, 0), Uint256))
     let (i) = uint256_sub(cast((248, 0), Uint256), i)
     let (a) = uint256_shl(a, i)
@@ -157,17 +170,18 @@ func uint256_byte{range_check_ptr, bitwise_ptr : BitwiseBuiltin*}(a : Uint256, i
     let (low) = bitwise_and(res.low, 255)
     return (res=cast((low, 0), Uint256))
 end
-
-func uint256_exp{range_check_ptr}(a : Uint256, b : Uint256) -> (res : Uint256):
+func uint256_exp{range_check_ptr, bitwise_ptr : BitwiseBuiltin*}(a : Uint256, b : Uint256) -> (
+        res : Uint256):
+    alloc_locals
     if b.low + b.high == 0:
         return (Uint256(1, 0))
     end
-    let (b_half) = u256_shr(b, 1)
+    let (b_half) = u256_shr(b, Uint256(1, 0))
     let (r1) = uint256_exp(a, b_half)
-    let (r2) = uint256_mul(r1, r1)
-    let (odd) = bitwise_and(b.low)
+    let (r2, _) = uint256_mul(r1, r1)
+    let (odd) = bitwise_and(b.low, 1)
     if odd == 1:
-        let (r3) = uint256_mul(r2, a)
+        let (r3, _) = uint256_mul(r2, a)
         return (r3)
     else:
         return (r2)
@@ -176,6 +190,7 @@ end
 
 func uint256_mulmod{range_check_ptr, bitwise_ptr : BitwiseBuiltin*}(
         a : Uint256, b : Uint256, m : Uint256) -> (res : Uint256):
+    alloc_locals
     let (_, ar) = uint256_unsigned_div_rem(a, m)
     let (_, br) = uint256_unsigned_div_rem(b, m)
     return mulmod_helper(ar, br, m)
@@ -183,13 +198,14 @@ end
 
 func mulmod_helper{range_check_ptr, bitwise_ptr : BitwiseBuiltin*}(
         ar : Uint256, br : Uint256, m : Uint256) -> (res : Uint256):
+    alloc_locals
     if br.low + br.high == 0:
         return (Uint256(1, 0))
     end
-    let (br_half) = u256_shr(br, 1)
+    let (br_half) = u256_shr(br, Uint256(1, 0))
     let (r1) = mulmod_helper(ar, br_half, m)
     let (r2) = addmod_helper(r1, r1, m)
-    let (odd) = bitwise_and(br.low)
+    let (odd) = bitwise_and(br.low, 1)
     if odd == 1:
         let (r3) = addmod_helper(r2, ar, m)
         return (r3)
@@ -199,6 +215,7 @@ func mulmod_helper{range_check_ptr, bitwise_ptr : BitwiseBuiltin*}(
 end
 
 func addmod_helper{range_check_ptr}(ar : Uint256, br : Uint256, m : Uint256) -> (res : Uint256):
+    alloc_locals
     let (ar_c) = uint256_sub(m, ar)
     let (fits) = uint256_lt(br, ar_c)
     if fits == 1:
