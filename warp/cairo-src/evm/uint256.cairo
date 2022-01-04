@@ -152,28 +152,30 @@ func uint256_sar{range_check_ptr, bitwise_ptr : BitwiseBuiltin*}(i : Uint256, a 
     let (shred) = shr_helper(i.low, a)
     let (le_127) = is_le(i.low, 127)
     if le_127 == 1:
-        let (mask) = pow2(i.low)
-        let (mask) = bitwise_not(mask - 1)
+        let mask = UINT128_BOUND - 1
+        let (mask_low) = pow2(128 - i.low)
+        let mask = mask - (mask_low - 1)
         let (res_high) = bitwise_or(shred.high, mask)
         return (Uint256(shred.low, res_high))
     end
     let (le_255) = is_le(i.low, 255)
     if le_255 == 1:
-        let (mask) = pow2(i.low - 128)
-        let (mask) = bitwise_not(mask - 1)
+        let mask = UINT128_BOUND - 1
+        let (mask_low) = pow2(256 - i.low)
+        let mask = mask - (mask_low - 1)
+        # turn bits higher than 128 off
         let (res_low) = bitwise_or(shred.low, mask)
         return (Uint256(res_low, 2 ** 128 - 1))
     end
     return (Uint256(2 ** 128 - 1, 2 ** 128 - 1))
  end
 
-
 func uint256_signextend{range_check_ptr, bitwise_ptr : BitwiseBuiltin*}(i : Uint256, a : Uint256) -> (res : Uint256):
     alloc_locals
-    let (i, _) = uint256_mul(i, cast((8, 0), Uint256))
-    let (i) = uint256_sub(cast((248, 0), Uint256), i)
+    let (i, _) = uint256_mul(i, Uint256(8, 0))
+    let (i) = uint256_sub(Uint256(248, 0), i)
     let (a) = uint256_shl(a, i)
-    let (a) = uint256_sar(a, i)
+    let (a) = uint256_sar(i, a)
     return (a)
 end
 
