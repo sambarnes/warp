@@ -15,7 +15,7 @@ then
 else
   git clone git@github.com:ethereum/solidity.git
   mv solidity tests/semantic
-  cd solidity
+  cd tests/semantic/solidity
   git checkout e5eed63a3e83d698d8657309fd371248945a1cda
   cd ..
   pushd solidity/test/libsolidity/semanticTests || exit

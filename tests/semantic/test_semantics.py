@@ -168,7 +168,6 @@ async def test_semantics(contract_file):
             res = await invoke_method_evm_calldata(starknet, contract_address, argument)
 
             result_size, result_len, *result = res.retdata
-
             if result:
                 result = [r.to_bytes(16, "big") for r in result]
                 final_res = result[0]
@@ -176,8 +175,8 @@ async def test_semantics(contract_file):
                     final_res = final_res + r
                 final_res = "0x" + final_res.hex()
 
-                # print(f"final_res: {final_res}")
-                # print(f"expected_res: {expected_result}\n\n")
+                print(f"   final_res: {final_res}")
+                print(f"expected_res: {expected_result}\n\n")
                 # TODO convert the expected_result to uint256
                 check.equal(final_res, expected_result, cairo_file_path)
 
@@ -188,7 +187,7 @@ async def test_semantics(contract_file):
 #     # compiled_files = [
 #     #     test_semantics(sol_file) for sol_file in sol_files_in_dir(test_folder)
 #     # ]
-#     await test_semantics("/home/greg/dev/nethermind/warp/tests/semantic/solidity/test/libsolidity/semanticTests/operators/shifts/bitwise_shifting_constantinople.sol")
+#     await test_semantics("/home/greg/dev/nethermind/warp/tests/semantic/solidity/test/libsolidity/semanticTests/operators/shifts/shift_right_negative_lvalue_int32.sol")
 #     # await asyncio.gather(*compiled_files)
 
 
