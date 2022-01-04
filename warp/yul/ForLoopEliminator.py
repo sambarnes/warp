@@ -27,6 +27,7 @@ class ForLoopEliminator(AstMapper):
         self.loop_name: Optional[str] = None
         self.break_name: Optional[str] = None
         self.leave_name: Optional[str] = None
+        self.has_leave: bool = False
         self.aux_functions: List[ast.FunctionDefinition] = []
 
     def map(self, node: ast.Node, **kwargs):
@@ -45,7 +46,9 @@ class ForLoopEliminator(AstMapper):
             assert self.leave_name and self.break_name
 
             body = self.visit(node.body)
-            body_fun, body_stmt = extract_block_as_function(body, self.body_name)
+            body_fun, body_stmt = extract_block_as_function(
+                body, self.body_name, has_leave=self.has_leave
+            )
 
             rec_loop_head = lambda rec: self._make_loop_head(
                 node.condition, body_stmt, rec
@@ -76,6 +79,7 @@ class ForLoopEliminator(AstMapper):
 
     def visit_break(self, node: ast.Break):
         assert self.break_name
+        self.has_leave = True
         return ast.Block(
             (
                 ast.Assignment(
@@ -87,9 +91,11 @@ class ForLoopEliminator(AstMapper):
         )
 
     def visit_continue(self, node: ast.Continue):
+        self.has_leave = True
         return ast.LEAVE
 
     def visit_leave(self, node: ast.Leave):
+        self.has_leave = True
         if not self.leave_name:  # not in a loop
             return node
         return ast.Block(
@@ -111,10 +117,13 @@ class ForLoopEliminator(AstMapper):
             self.break_name,
         ) = self.name_gen.make_loop_names()
         self.leave_name = self.name_gen.make_leave_name()
+        old_has_leave = self.has_leave
+        self.has_leave = False
         try:
             yield None
         finally:
             self.body_name, self.loop_name, self.break_name, self.leave_name = old_names
+            self.has_leave = old_has_leave
 
     def _make_loop_head(
         self, condition: ast.Expression, body_stmt: ast.Statement, rec: ast.Statement
