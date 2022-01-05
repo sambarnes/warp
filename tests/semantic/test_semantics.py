@@ -175,8 +175,6 @@ async def test_semantics(contract_file):
                     final_res = final_res + r
                 final_res = "0x" + final_res.hex()
 
-                print(f"   final_res: {final_res}")
-                print(f"expected_res: {expected_result}\n\n")
                 # TODO convert the expected_result to uint256
                 check.equal(final_res, expected_result, cairo_file_path)
 
