@@ -13,6 +13,7 @@ const UINT128_BOUND = 2 ** 128
 
 func shr_helper{range_check_ptr, bitwise_ptr : BitwiseBuiltin*}(i, a : Uint256) -> (
         result : Uint256):
+    alloc_locals
     let (le_127) = is_le(i, 127)
     if le_127 == 1:
         # (h', l') := (h, l) >> i
@@ -110,7 +111,7 @@ end
 func sgt{range_check_ptr}(op1 : Uint256, op2 : Uint256) -> (result : Uint256):
     let (eq) = uint256_eq(op1, op2)
     if eq == 1:
-        return (Uint256(0,0)) 
+        return (Uint256(0,0))
     end
     let (res) = uint256_signed_lt(op1, op2)
     return (result=Uint256(1 - res, 0))
@@ -187,13 +188,14 @@ func uint256_byte{range_check_ptr, bitwise_ptr : BitwiseBuiltin*}(a : Uint256, i
     let (low) = bitwise_and(res.low, 255)
     return (res=cast((low, 0), Uint256))
 end
+
 func uint256_exp{range_check_ptr, bitwise_ptr : BitwiseBuiltin*}(a : Uint256, b : Uint256) -> (
         res : Uint256):
     alloc_locals
     if b.low + b.high == 0:
         return (Uint256(1, 0))
     end
-    let (b_half) = u256_shr(b, Uint256(1, 0))
+    let (b_half) = u256_shr(Uint256(1, 0), b)
     let (r1) = uint256_exp(a, b_half)
     let (r2, _) = uint256_mul(r1, r1)
     let (odd) = bitwise_and(b.low, 1)
@@ -219,7 +221,7 @@ func mulmod_helper{range_check_ptr, bitwise_ptr : BitwiseBuiltin*}(
     if br.low + br.high == 0:
         return (Uint256(1, 0))
     end
-    let (br_half) = u256_shr(br, Uint256(1, 0))
+    let (br_half) = u256_shr(Uint256(1, 0), br)
     let (r1) = mulmod_helper(ar, br_half, m)
     let (r2) = addmod_helper(r1, r1, m)
     let (odd) = bitwise_and(br.low, 1)
