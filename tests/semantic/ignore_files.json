@@ -234,6 +234,7 @@
     "solidity/test/libsolidity/semanticTests/ecrecover/failing_ecrecover_invalid_input.sol",
     "solidity/test/libsolidity/semanticTests/ecrecover/failing_ecrecover_invalid_input_asm.sol",
     "solidity/test/libsolidity/semanticTests/ecrecover/failing_ecrecover_invalid_input_proper.sol",
+    "solidity/test/libsolidity/semanticTests/builtinFunctions/sha256_empty.sol",
 
     "// uses events",
     "solidity/test/libsolidity/semanticTests/enums/invalid_enum_logged.sol",
@@ -477,6 +478,10 @@
     "solidity/test/libsolidity/semanticTests/uninitializedFunctionPointer/invalidInConstructor.sol",
     "solidity/test/libsolidity/semanticTests/uninitializedFunctionPointer/invalidStoredInConstructor.sol",
     "solidity/test/libsolidity/semanticTests/viaYul/array_function_pointers.sol",
+    "solidity/test/libsolidity/semanticTests/viaYul/function_address.sol",
+    "solidity/test/libsolidity/semanticTests/viaYul/function_selector.sol",
+    "solidity/test/libsolidity/semanticTests/functionTypes/store_function.sol",
+    "solidity/test/libsolidity/semanticTests/functionTypes/address_member.sol",
 
     "// keccak ",
     "solidity/test/libsolidity/semanticTests/array/concat/bytes_concat_as_argument.sol",
@@ -511,6 +516,9 @@
     "solidity/test/libsolidity/semanticTests/calldata/calldata_internal_function_pointer.sol",
     "solidity/test/libsolidity/semanticTests/viaYul/conversion/function_cast.sol",
     "solidity/test/libsolidity/semanticTests/calldata/calldata_internal_multi_array.sol",
-    "solidity/test/libsolidity/semanticTests/functionCall/delegatecall_return_value.sol"
+    "solidity/test/libsolidity/semanticTests/functionCall/delegatecall_return_value.sol",
+
+    "// compile fails because of 256 bit addresses",
+    "solidity/test/libsolidity/semanticTests/getters/value_types.sol"
   ]
 }
