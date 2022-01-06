@@ -145,7 +145,6 @@ end
 func uint256_byte{range_check_ptr, bitwise_ptr : BitwiseBuiltin*}(a : Uint256, i : Uint256) -> (
         res : Uint256):
     let (i, _) = uint256_mul(i, cast((8, 0), Uint256))
-    let (i) = uint256_sub(cast((248, 0), Uint256), i)
     let (res) = u256_shr(i, a)
     let (low) = bitwise_and(res.low, 255)
     return (res=cast((low, 0), Uint256))
