@@ -10,9 +10,11 @@ class ForLoopSimplifier(AstMapper):
                 ast.ForLoop(
                     pre=ast.Block(),
                     condition=node.condition,
-                    post=ast.Block(),
+                    post=self.visit(
+                        ast.Block(node.post.statements)
+                    ),
                     body=self.visit(
-                        ast.Block(node.body.statements + node.post.statements)
+                        ast.Block(node.body.statements)
                     ),
                 ),
             )

@@ -39,19 +39,19 @@ class ForLoopEliminator(AstMapper):
 
     def visit_for_loop(self, node: ast.ForLoop):
         assert not node.pre.statements, "Loop not simplified"
-        assert not node.post.statements, "Loop not simplified"
 
         with self._new_for_loop():
             assert self.loop_name and self.body_name
             assert self.leave_name and self.break_name
 
             body = self.visit(node.body)
+            post = self.visit(node.post)
             body_fun, body_stmt = extract_block_as_function(
                 body, self.body_name, has_leave=self.has_leave
             )
 
             rec_loop_head = lambda rec: self._make_loop_head(
-                node.condition, body_stmt, rec
+                node.condition, body_stmt, post.statements, rec
             )
             head_fun, head_stmt = extract_rec_block_as_function(
                 rec_loop_head,
@@ -126,7 +126,7 @@ class ForLoopEliminator(AstMapper):
             self.has_leave = old_has_leave
 
     def _make_loop_head(
-        self, condition: ast.Expression, body_stmt: ast.Statement, rec: ast.Statement
+            self, condition: ast.Expression, body_stmt: ast.Statement, post_stmts: list[ast.Statement], rec: ast.Statement
     ) -> ast.Block:
         assert self.break_name and self.leave_name
         break_id = ast.Identifier(self.break_name)
@@ -145,5 +145,6 @@ class ForLoopEliminator(AstMapper):
             head_stmts.append(ast.If(condition=break_id, body=ast.LEAVE_BLOCK))
         if leave_id in modified_vars:
             head_stmts.append(ast.If(condition=leave_id, body=ast.LEAVE_BLOCK))
+        head_stmts += post_stmts
         head_stmts.append(rec)
         return ast.Block(tuple(head_stmts))
