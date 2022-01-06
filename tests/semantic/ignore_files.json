@@ -394,10 +394,10 @@
     "solidity/test/libsolidity/semanticTests/fallback/fallback_return_data.sol",
     "solidity/test/libsolidity/semanticTests/fallback/inherited.sol",
     "solidity/test/libsolidity/semanticTests/fallback/short_data_calls_fallback.sol",
-    "solidity/test/libsolitidy/semanticTests/array/delete/delete_removes_bytes_data.sol",
-    "solidity/test/libsolitidy/semanticTests/fallback/expressions/uncalled_address_transfer_send.sol",
-    "solidity/test/libsolitidy/semanticTests/reverts/revert_return_area.sol",
-    "solidity/test/libsolitidy/semanticTests/smoke/fallback.sol",
+    "solidity/test/libsolidity/semanticTests/array/delete/delete_removes_bytes_data.sol",
+    "solidity/test/libsolidity/semanticTests/fallback/expressions/uncalled_address_transfer_send.sol",
+    "solidity/test/libsolidity/semanticTests/reverts/revert_return_area.sol",
+    "solidity/test/libsolidity/semanticTests/smoke/fallback.sol",
 
 
     "// not implemented on starknet" ,
