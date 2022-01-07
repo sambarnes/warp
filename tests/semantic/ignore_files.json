@@ -520,6 +520,12 @@
     "solidity/test/libsolidity/semanticTests/functionCall/delegatecall_return_value.sol",
 
     "// compile fails because of 256 bit addresses",
-    "solidity/test/libsolidity/semanticTests/getters/value_types.sol"
+    "solidity/test/libsolidity/semanticTests/getters/value_types.sol",
+
+     "// warp is too slow",
+    "solidity/test/libsolidity/semanticTests/viaYul/array_storage_index_access.sol",
+    "solidity/test/libsolidity/semanticTests/viaYul/array_storage_push_pop.sol",
+    "solidity/test/libsolidity/semanticTests/viaYul/array_storage_push_empty_length_address.sol",
+    "solidity/test/libsolidity/semanticTests/viaYul/array_storage_length_access.sol"
   ]
 }
