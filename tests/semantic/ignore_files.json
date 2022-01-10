@@ -484,9 +484,6 @@
     "solidity/test/libsolidity/semanticTests/functionTypes/store_function.sol",
     "solidity/test/libsolidity/semanticTests/functionTypes/address_member.sol",
 
-    "// keccak ",
-    "solidity/test/libsolidity/semanticTests/builtinFunctions/iterated_keccak256_with_bytes.sol",
-
     "// contract calls itself (starknet doesn't support this)",
     "solidity/test/libsolidity/semanticTests/calldata/calldata_internal_function_pointer.sol",
     "solidity/test/libsolidity/semanticTests/viaYul/conversion/function_cast.sol",
@@ -497,12 +494,22 @@
     "solidity/test/libsolidity/semanticTests/getters/value_types.sol",
 
      "// warp is too slow",
-    "solidity/test/libsolidity/semanticTests/viaYul/array_storage_index_access.sol",
-    "solidity/test/libsolidity/semanticTests/viaYul/array_storage_push_pop.sol",
-    "solidity/test/libsolidity/semanticTests/viaYul/array_storage_push_empty_length_address.sol",
-    "solidity/test/libsolidity/semanticTests/viaYul/array_storage_length_access.sol",
-    "solidity/test/libsolidity/semanticTests/viaYul/array_storage_index_zeroed_test.sol",
+    "solidity/test/libsolidity/semanticTests/abiEncoderV1/abi_encode_calldata_slice.sol",
     "solidity/test/libsolidity/semanticTests/abiEncoderV2/abi_encode_calldata_slice.sol",
-    "solidity/test/libsolidity/semanticTests/abiEncoderV1/abi_encode_calldata_slice.sol"
+    "solidity/test/libsolidity/semanticTests/viaYul/array_storage_index_access.sol",
+    "solidity/test/libsolidity/semanticTests/viaYul/array_storage_index_zeroed_test.sol",
+    "solidity/test/libsolidity/semanticTests/viaYul/array_storage_length_access.sol",
+    "solidity/test/libsolidity/semanticTests/viaYul/array_storage_push_empty_length_address.sol",
+    "solidity/test/libsolidity/semanticTests/viaYul/array_storage_push_pop.sol",
+
+    "// explicit use of keccak256 to access storage, while we use pedersen for efficiency",
+    "solidity/test/libsolidity/semanticTests/array/copying/copy_byte_array_to_storage.sol",
+    "solidity/test/libsolidity/semanticTests/array/delete/delete_storage_array.sol",
+    "solidity/test/libsolidity/semanticTests/inlineAssembly/slot_access.sol",
+    "solidity/test/libsolidity/semanticTests/viaYul/array_storage_index_zeroed_test.sol",
+    "solidity/test/libsolidity/semanticTests/viaYul/storage/dirty_storage_bytes_long.sol",
+    "solidity/test/libsolidity/semanticTests/viaYul/storage/dirty_storage_dynamic_array.sol",
+    "solidity/test/libsolidity/semanticTests/viaYul/storage/dirty_storage_struct.sol",
+    "solidity/test/libsolidity/semanticTests/viaYul/storage/dirty_storage_struct.sol"
   ]
 }
