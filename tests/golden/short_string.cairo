@@ -65,14 +65,13 @@ end
 
 func __warp_loop_body_0{
         bitwise_ptr : BitwiseBuiltin*, memory_dict : DictAccess*, msize, range_check_ptr}(
-        _1 : Uint256, i : Uint256) -> (i : Uint256):
+        i : Uint256) -> ():
     alloc_locals
     let (__warp_subexpr_2 : Uint256) = u256_add(i, Uint256(low=160, high=0))
     let (__warp_subexpr_1 : Uint256) = uint256_mload(__warp_subexpr_2)
     let (__warp_subexpr_0 : Uint256) = u256_add(i, Uint256(low=256, high=0))
     uint256_mstore(offset=__warp_subexpr_0, value=__warp_subexpr_1)
-    let (i : Uint256) = u256_add(i, _1)
-    return (i)
+    return ()
 end
 
 func __warp_loop_0{
@@ -84,7 +83,8 @@ func __warp_loop_0{
     if __warp_subexpr_0.low + __warp_subexpr_0.high != 0:
         return (i)
     end
-    let (i : Uint256) = __warp_loop_body_0(_1, i)
+    __warp_loop_body_0(i)
+    let (i : Uint256) = u256_add(i, _1)
     let (i : Uint256) = __warp_loop_0(_1, i, length)
     return (i)
 end
@@ -183,7 +183,7 @@ end
 
 func __warp_loop_body_1{
         bitwise_ptr : BitwiseBuiltin*, memory_dict : DictAccess*, msize, range_check_ptr}(
-        _1 : Uint256, headStart : Uint256, i : Uint256, value0 : Uint256) -> (i : Uint256):
+        _1 : Uint256, headStart : Uint256, i : Uint256, value0 : Uint256) -> ():
     alloc_locals
     let (__warp_subexpr_4 : Uint256) = u256_add(value0, i)
     let (__warp_subexpr_3 : Uint256) = u256_add(__warp_subexpr_4, _1)
@@ -191,8 +191,7 @@ func __warp_loop_body_1{
     let (__warp_subexpr_1 : Uint256) = uint256_mload(__warp_subexpr_3)
     let (__warp_subexpr_0 : Uint256) = u256_add(__warp_subexpr_2, Uint256(low=64, high=0))
     uint256_mstore(offset=__warp_subexpr_0, value=__warp_subexpr_1)
-    let (i : Uint256) = u256_add(i, _1)
-    return (i)
+    return ()
 end
 
 func __warp_loop_1{
@@ -205,7 +204,8 @@ func __warp_loop_1{
     if __warp_subexpr_0.low + __warp_subexpr_0.high != 0:
         return (i)
     end
-    let (i : Uint256) = __warp_loop_body_1(_1, headStart, i, value0)
+    __warp_loop_body_1(_1, headStart, i, value0)
+    let (i : Uint256) = u256_add(i, _1)
     let (i : Uint256) = __warp_loop_1(_1, headStart, i, length, value0)
     return (i)
 end
