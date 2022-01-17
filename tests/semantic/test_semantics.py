@@ -101,7 +101,7 @@ def get_expectations(contract_file):
     split_path = Path(contract_file).parts
     libsolidity_folder_index = split_path.index("libsolidity")
     contract_path = (
-        f"./scripts/../test/{str(Path(*split_path[libsolidity_folder_index:]))}"
+        f"solidity/test/{str(Path(*split_path[libsolidity_folder_index:]))}"
     )
     expectations = test_calldata[contract_path]
 

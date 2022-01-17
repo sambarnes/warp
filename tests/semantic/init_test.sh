@@ -13,12 +13,13 @@ if [ -d "tests/semantic/solidity/test/libsolidity/semanticTests" ]
 then
   echo "Semantic Tests already initialized"
 else
-  git clone git@github.com:ethereum/solidity.git
-  mv solidity tests/semantic
-  cd tests/semantic/solidity
+  git clone git@github.com:ethereum/solidity.git tests/semantic/solidity
+  pushd tests/semantic/solidity/test/libsolidity/semanticTests || exit
   git checkout e5eed63a3e83d698d8657309fd371248945a1cda
-  cd ..
-  pushd solidity/test/libsolidity/semanticTests || exit
   prepend_solidity_version
   popd || exit
+
+  isoltest --print-test-expectations\
+    --testpath tests/semantic/solidity/test/libsolidity/semanticTests/ >\
+    tests/semantic/test_calldata.json
 fi
